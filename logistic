@@ -1,0 +1,83 @@
+import pandas as pd
+
+# Load the dataset
+data = pd.read_csv('HR_comma_sep.csv')
+
+# Display the first few rows of the dataset
+print(data.head())
+# Check for missing values
+print(data.isnull().sum())
+
+# Check the data types
+print(data.dtypes)
+
+# Encode categorical variables if any
+# For this dataset, let's assume 'salary' is a categorical variable
+data = pd.get_dummies(data, columns=['salary'], drop_first=True)
+
+# Display the updated dataset
+print(data.head())
+from sklearn.model_selection import train_test_split
+
+# Define features and target variable
+X = data.drop('left', axis=1)  # Assuming 'left' is the target variable
+y = data['left']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+
+# Standardize the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Initialize and train the logistic regression model
+model = LogisticRegression(random_state=42, max_iter=10000)
+model.fit(X_train_scaled, y_train)
+from sklearn.metrics import accuracy_score
+
+# Make predictions on the test set
+y_pred = model.predict(X_test_scaled)
+
+# Compute the accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy of the logistic regression model: {accuracy:.2f}')
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
+
+# Load the dataset
+data = pd.read_csv('HR_comma_sep.csv')
+
+# Encode categorical variables
+data = pd.get_dummies(data, columns=['salary'], drop_first=True)
+
+# Define features and target variable
+X = data.drop('left', axis=1)  # Assuming 'left' is the target variable
+y = data['left']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Standardize the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Initialize and train the logistic regression model
+model = LogisticRegression(random_state=42, max_iter=10000)
+model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test_scaled)
+
+# Compute the accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy of the logistic regression model: {accuracy:.2f}')
